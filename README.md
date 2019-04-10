@@ -20,14 +20,19 @@ Example of message:
 
 2. run the images 
 
-produces creates a mock data and push it into event hub
+produces creates mock messages and push them into the stream
 
-`docker run --env INTERVAL_IN_SECONDS=2 --env STREAM_ID=sensor1  --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name   --env PARTITION=0  --env PYTHONUNBUFFERED=0 azadehkhojandi/azure_eventhub_mock_producer:0.1`
+```
+docker run --env INTERVAL_IN_SECONDS=2 --env STREAM_ID=sensor1  --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name   --env PARTITION=0  --env PYTHONUNBUFFERED=0 azadehkhojandi/azure_eventhub_mock_producer:0.1
+
+```
 
 
 consumer reads it from the stream
 
-`docker run --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name --env CONSUMER_GROUP=\$default --env OFFSET=-1 --env PARTITION=0  --env PYTHONUNBUFFERED=0  azadehkhojandi/azure_eventhub_consumer:0.1`
+```
+docker run --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name --env CONSUMER_GROUP=\$default --env OFFSET=-1 --env PARTITION=0  --env PYTHONUNBUFFERED=0  azadehkhojandi/azure_eventhub_consumer:0.1
+```
 
 
 
@@ -54,21 +59,29 @@ It produces mock/dummy messages and sends it to eventhub stream
 
 1. build the docker image
 
-`docker build -t mocks/eventhub_producer:0.1 -f producer.Dockerfile .`
+```
+docker build -t mocks/eventhub_producer:0.1 -f producer.Dockerfile .
+```
 
 2. run the docker image
 
 option 1: 
 
-`docker run --env INTERVAL_IN_SECONDS=2 --env STREAM_ID=sensor1  --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name   --env PARTITION=0  --env PYTHONUNBUFFERED=0 mocks/eventhub_producer:0.1`
+```
+docker run --env INTERVAL_IN_SECONDS=2 --env STREAM_ID=sensor1  --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name   --env PARTITION=0  --env PYTHONUNBUFFERED=0 mocks/eventhub_producer:0.1
+```
 
 option 2:
 
-`docker run --env-file ./producer.env.list mocks/eventhub_producer:0.1`
+```
+docker run --env-file ./producer.env.list mocks/eventhub_producer:0.1
+```
 
 Note: You can overwrite env variables in env-file by passing them directly 
 
-`docker run --env-file ./producer.env.list -e STREAM_ID=testazadeh  mocks/eventhub_producer:0.1`
+```
+docker run --env-file ./producer.env.list -e STREAM_ID=testazadeh  mocks/eventhub_producer:0.1
+```
 
 ### Consumer
 
@@ -78,21 +91,29 @@ It reads the  messages from eventhub stream
 
 1. build the docker image
 
-`docker build -t mocks/eventhub_consumer:0.1 -f consumer.Dockerfile .`
+```
+docker build -t mocks/eventhub_consumer:0.1 -f consumer.Dockerfile .
+```
 
 2. run the docker image
 
 option 1: 
 
-`docker run --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name --env CONSUMER_GROUP=\$default --env OFFSET=-1 --env PARTITION=0  --env PYTHONUNBUFFERED=0  mocks/eventhub_consumer:0.1`
+```
+docker run --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name --env CONSUMER_GROUP=\$default --env OFFSET=-1 --env PARTITION=0  --env PYTHONUNBUFFERED=0  mocks/eventhub_consumer:0.1
+```
 
 option 2:
 
-`docker run --env-file ./consumer.env.list mocks/eventhub_consumer:0.1`
+```
+docker run --env-file ./consumer.env.list mocks/eventhub_consumer:0.1
+```
 
 Note: You can overwrite env variables in env-file by passing them directly 
 
-`docker run --env-file ./consumer.env.list -e CONSUMER_GROUP=insert_your_customgroup_name  mocks/eventhub_consumer:0.1`
+```
+docker run --env-file ./consumer.env.list -e CONSUMER_GROUP=insert_your_customgroup_name  mocks/eventhub_consumer:0.1
+```
 
 
 # Resources
