@@ -12,6 +12,25 @@ Example of message:
 ```
 {"id": "bananas", "utc": "April 10 2019 - 01:49:42", "timestamp": 1554860982.597929, "value": 26}
 ```
+## Quick start
+
+1. gets the images from docker hub
+`docker pull azadehkhojandi/azure_eventhub_mock_producer:0.1`
+`docker pull azadehkhojandi/azure_eventhub_consumer:0.1`
+
+2. run the images 
+
+produces creates a mock data and push it into event hub
+
+`docker run --env INTERVAL_IN_SECONDS=2 --env STREAM_ID=sensor1  --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name   --env PARTITION=0  --env PYTHONUNBUFFERED=0 azadehkhojandi/azure_eventhub_mock_producer:0.1`
+
+
+consumer reads it from the stream
+
+`docker run --env EVENT_HUB_SAS_POLICY=insert-your-policy-name --env EVENT_HUB_SAS_KEY=insert-your-key  --env EVENT_HUB_ADDRESS=amqps://insert-your-eventhubnamespace-name.servicebus.windows.net/insert-your-eventhub-name --env CONSUMER_GROUP=\$default --env OFFSET=-1 --env PARTITION=0  --env PYTHONUNBUFFERED=0  azadehkhojandi/azure_eventhub_consumer:0.1`
+
+
+
 ### How to:
 1. Get linux version? `cat /etc/os-release`
 2. Create Conda environment based on `environment.yml` file?`conda env create -f environment.yml`
@@ -31,6 +50,7 @@ Example of message:
 ### Producer
 
 It produces mock/dummy messages and sends it to eventhub stream
+
 
 1. build the docker image
 
@@ -53,6 +73,8 @@ Note: You can overwrite env variables in env-file by passing them directly
 ### Consumer
 
 It reads the  messages from eventhub stream
+
+`docker pull azadehkhojandi/azure_eventhub_consumer:0.1``
 
 1. build the docker image
 
