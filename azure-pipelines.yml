@@ -1,0 +1,32 @@
+trigger:
+- master
+
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+variables:
+
+  acrName: 'insert-your-acr-name'
+  producer-imageName: 'streams/eventhub-mock-producer:build$(Build.BuildId)-$(Build.SourceVersion)'
+  consumer-imageName: 'streams/eventhub-consumer:build$(Build.BuildId)-$(Build.SourceVersion)'
+  azure-subscription: 'insert-your-azuredevops-serviceconnection-name'
+  # define two more variables dockerId and dockerPassword in the build pipeline in UI
+
+steps:
+- task: AzureCLI@1
+
+  displayName: Push to Azure Container Registry [$(producer-imageName)]
+  inputs:
+    azureSubscription: $(azure-subscription)
+    scriptLocation: 'inlineScript' 
+    inlineScript: az acr build --registry $(acrName) --image $(producer-imageName) --debug  --file ./producer.Dockerfile .
+
+- task: AzureCLI@1
+
+  displayName: Push to Azure Container Registry [$(consumer-imageName)]
+  inputs:
+    azureSubscription: $(azure-subscription)
+    scriptLocation: 'inlineScript' 
+    inlineScript: az acr build --registry $(acrName) --image $(consumer-imageName) --debug --file ./consumer.Dockerfile .
+
